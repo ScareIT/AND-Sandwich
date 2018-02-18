@@ -3,6 +3,7 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,8 +17,11 @@ public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
 
+    private TextView knownAsLabel;
     private TextView knownAs;
     private TextView origin;
+    private TextView description;
+    private TextView ingredients;
 
     private Sandwich sandwich;
 
@@ -64,15 +68,32 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateUI() {
-        String knowAs = "";
-        for (String knowAsLine:
-                this.sandwich.getAlsoKnownAs()) {
-            knowAs += knowAsLine + "\n";
+        if(this.sandwich.getAlsoKnownAs().size() > 0) {
+            String knowAs = "";
+            for (String knowAsLine :
+                    this.sandwich.getAlsoKnownAs()) {
+                knowAs += knowAsLine + "\n";
+            }
+            this.knownAs = findViewById(R.id.also_known_tv);
+            this.knownAs.setText(knowAs);
         }
-        this.knownAs = findViewById(R.id.also_known_tv);
-        this.knownAs.setText(knowAs);
+        else {
+            this.knownAsLabel = findViewById(R.id.also_known_label_tv);
+            this.knownAsLabel.setVisibility(View.GONE);
+        }
+
+        String ingredient = "";
+        for (String ingredientLine:
+                this.sandwich.getIngredients()) {
+            ingredient += ingredientLine + "\n";
+        }
+        this.ingredients = findViewById(R.id.ingredients_tv);
+        this.ingredients.setText(ingredient);
 
         this.origin = findViewById(R.id.origin_tv);
-        this.origin.setText(sandwich.getPlaceOfOrigin());
+        this.origin.setText(sandwich.getPlaceOfOrigin() + "\n");
+
+        this.description = findViewById(R.id.description_tv);
+        this.description.setText(sandwich.getDescription() + "\n");
     }
 }
